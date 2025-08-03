@@ -364,16 +364,19 @@ const DetailCar = () => {
                     )}
                   </Box>
                   <Button
-                    component={Link} // Changed to Link component
-                    to={`/payment/${car.id}`} // Added the 'to' prop for navigation
                     variant="contained"
                     color="primary"
+                    component={Link}
+                    to={`/payment/${car.id}`}
+                    state={{ car }} // truyền toàn bộ đối tượng car qua location.state
                     sx={{
                       borderRadius: 2,
                       textTransform: "none",
-                      fontWeight: 600,
-                      px: 3,
-                      py: 1.5,
+                      fontWeight: 500,
+                      fontSize: 13,
+                      px: 2,
+                      py: 1,
+                      minWidth: "unset",
                     }}
                   >
                     Rent Now

@@ -1,11 +1,9 @@
-// mockCars.js
 const mockCars = [
   {
     "id": 1,
     "name": "Toyota Camry HEV Top CE",
     "type": "Sedan",
-    "price": 61200, // 1,530,000,000 VND / 25,000 = 61,200 USD
-    "originalPrice": null, // Giá gốc không công bố
+    "price": 60,
     "image": "https://drive.gianhangvn.com/image/toyota-camry-hv-zing-1-2385312j22961.jpg",
     "mainDescription": "Phiên bản hybrid cao cấp với nội thất sang trọng và tiện nghi hiện đại.",
     "rating": 4.5,
@@ -23,8 +21,7 @@ const mockCars = [
     "id": 2,
     "name": "Tesla Model 3 2025",
     "type": "Sedan",
-    "price": 45080, // 1,127,000,000 VND / 25,000 = 45,080 USD
-    "originalPrice": 50200, // 1,255,000,000 VND / 25,000 = 50,200 USD
+    "price": 45,
     "image": "https://giaxeoto.vn/admin/upload/images/resize/640-tesla-model-3-2024-co-gi-moi.jpg",
     "mainDescription": "Tesla Model 3 là sedan điện hoàn toàn với phạm vi di chuyển dài, hệ thống Autopilot tiên tiến và nội thất tối giản với màn hình cảm ứng 15,4\".",
     "rating": 4.8,
@@ -42,8 +39,7 @@ const mockCars = [
     "id": 3,
     "name": "BMW X5 xDrive40i M Sport",
     "type": "SUV",
-    "price": 183160, // 4,579,000,000 VND / 25,000 = 183,160 USD
-    "originalPrice": null, // Không có thông tin chiết khấu gốc
+    "price": 183,
     "image": "https://images.netdirector.co.uk/gforces-auto/image/upload/w_704,h_528,q_auto,c_fill,f_auto,fl_lossy/auto-titan/73be0b7171161d4548df2c2e980724f5/di22_000108689.jpg",
     "mainDescription": "BMW X5 2025 mang đến sự kết hợp hoàn hảo giữa thể thao, sang trọng và công nghệ tiên tiến. Phiên bản M Sport nâng cấp thiết kế năng động, trang bị hệ thống treo Adaptive 2 cầu và công nghệ BMW Operating System 8.5 mới nhất.",
     "rating": 4.7,
@@ -61,8 +57,7 @@ const mockCars = [
     "id": 4,
     "name": "Chevrolet Corvette Stingray 2025",
     "type": "Sport",
-    "price": 68200, // 1,705,000,000 VND / 25,000 = 68,200 USD
-    "originalPrice": 81000, // 2,025,000,000 VND / 25,000 = 81,000 USD
+    "price": 68,
     "image": "https://www.chevrolet.com/content/dam/chevrolet/na/us/english/index/vehicles/2025/performance/stingray/mov/01-images/2025-stingray-performance-01-v2.png?imwidth=3000",
     "mainDescription": "The 2025 Corvette Stingray delivers thrilling mid-engine performance, iconic design, and refined craftsmanship with race-bred technology.",
     "rating": 4.9,
@@ -80,8 +75,7 @@ const mockCars = [
     "id": 5,
     "name": "Audi A6 e-tron 2025",
     "type": "Sedan",
-    "price": 85000, // 2,125,000,000 VND / 25,000 = 85,000 USD
-    "originalPrice": 105000, // 2,625,000,000 VND / 25,000 = 105,000 USD
+    "price": 85,
     "image": "https://katavina.com/uploaded/tin/1/Audi-A6-E-Tron/1-Audi-A6-E-Tron.jpg",
     "mainDescription": "Audi A6 e-tron là mẫu sedan điện hạng sang với thiết kế khí động học, công nghệ chiếu sáng tiên tiến và khả năng di chuyển vượt trội trên nền tảng PPE mới.",
     "rating": 4.4,
@@ -99,8 +93,7 @@ const mockCars = [
     "id": 6,
     "name": "Mercedes-AMG GLE 53 4MATIC",
     "type": "SUV",
-    "price": 92150, // 2,303,750,000 VND / 25,000 = 92,150 USD
-    "originalPrice": null,
+    "price": 92,
     "image": "https://andu-mercedes.com/wp-content/uploads/2021/09/gle-450.jpg",
     "mainDescription": "GLE 53 Coupe kết hợp sức mạnh AMG và tiện nghi sang trọng với thiết kế coupe bốn cửa thể thao.",
     "rating": 4.6,
@@ -118,8 +111,7 @@ const mockCars = [
     "id": 7,
     "name": "Ford Mustang EcoBoost High Performance Package",
     "type": "Coupe",
-    "price": 150000, // 3,750,000,000 VND / 25,000 = 150,000 USD
-    "originalPrice": 180000, // 4,500,000,000 VND / 25,000 = 180,000 USD
+    "price": 15,
     "image": "https://carpassion.vn/wp-content/uploads/2019/04/ford_mustang2020_highperformance_00-1024x576.jpg",
     "mainDescription": "Mustang EcoBoost HPP – bản thể thao hiệu suất cao với động cơ 4‑xy‑lanh tăng áp, cảm giác lái sắc nét, tiết kiệm hơn V8.",
     "rating": 4.5,
@@ -137,8 +129,7 @@ const mockCars = [
     "id": 8,
     "name": "Honda Civic Sedan 2026",
     "type": "Sedan",
-    "price": 24595, // 614,875,000 VND / 25,000 = 24,595 USD
-    "originalPrice": 65000, // 1,625,000,000 VND / 25,000 = 65,000 USD
+    "price": 24,
     "image": "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1600.jpg",
     "mainDescription": "Reliable, efficient và tiết kiệm — Civic 2026 mang lại trải nghiệm lái hàng ngày đáng tin cậy và tiện nghi hiện đại.",
     "rating": 4.2,
@@ -156,8 +147,7 @@ const mockCars = [
     "id": 9,
     "name": "VinFast VF7",
     "type": "SUV",
-    "price": 31960, // 799,000,000 VND / 25,000 = 31,960 USD
-    "originalPrice": null,
+    "price": 32,
     "image": "https://vinfastvungtau.com.vn/hoanghung/UploadFile/images/vf/vinfast-vf7-3477-196.jpg",
     "mainDescription": "Compact electric SUV 5‑chỗ của VinFast với thiết kế tương lai, nội thất vegan đẹp và công nghệ hỗ trợ lái Level 2.",
     "rating": 4.2,
@@ -175,8 +165,7 @@ const mockCars = [
     "id": 10,
     "name": "Honda Civic Sedan 2026",
     "type": "Compact Sedan",
-    "price": 24595, // 614,875,000 VND / 25,000 = 24,595 USD
-    "originalPrice": 65000, // 1,625,000,000 VND / 25,000 = 65,000 USD
+    "price": 25,
     "image": "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1600.jpg",
     "mainDescription": "Reliable, efficient và tiết kiệm — Civic 2026 mang lại trải nghiệm lái hàng ngày đáng tin cậy và tiện nghi hiện đại.",
     "rating": 4.2,
@@ -194,8 +183,7 @@ const mockCars = [
     "id": 11,
     "name": "Honda Civic Sedan 2026",
     "type": "Compact Sedan",
-    "price": 24595, // 614,875,000 VND / 25,000 = 24,595 USD
-    "originalPrice": 65000, // 1,625,000,000 VND / 25,000 = 65,000 USD
+    "price": 25,
     "image": "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1600.jpg",
     "mainDescription": "Reliable, efficient và tiết kiệm — Civic 2026 mang lại trải nghiệm lái hàng ngày đáng tin cậy và tiện nghi hiện đại.",
     "rating": 4.2,
@@ -213,8 +201,7 @@ const mockCars = [
     "id": 12,
     "name": "Honda Civic Sedan 2026",
     "type": "Compact Sedan",
-    "price": 24595, // 614,875,000 VND / 25,000 = 24,595 USD
-    "originalPrice": 65000, // 1,625,000,000 VND / 25,000 = 65,000 USD
+    "price": 25,
     "image": "https://media.ed.edmunds-media.com/honda/civic/2026/oem/2026_honda_civic_sedan_si_fq_oem_1_1600.jpg",
     "mainDescription": "Reliable, efficient và tiết kiệm — Civic 2026 mang lại trải nghiệm lái hàng ngày đáng tin cậy và tiện nghi hiện đại.",
     "rating": 4.2,

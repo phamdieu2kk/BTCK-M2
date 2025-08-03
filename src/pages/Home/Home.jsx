@@ -16,22 +16,22 @@ const Home = () => {
       <Header />
 
       {/* Featured Cards */}
-      <Box sx={{ mt: { xs: 4, md: 8 }, px: { xs: 2, sm: 3, md: 6 } }}>
+      <Box sx={{ mt: { xs: 4, md: 4 }, px: { xs: 2, sm: 3, md: 6 } }}>
         <FeaturedCards />
       </Box>
 
       {/* Pick Up Drop Off */}
-      <Box sx={{ mt: { xs: 4, md: 8 }, px: { xs: 2, sm: 3, md: 6 } }}>
+      <Box sx={{ mt: { xs: 2, md: 4 }, px: { xs: 2, sm: 3, md: 6 } }}>
         <PickUpDropOff />
       </Box>
 
       {/* Popular Cars */}
-      <Box sx={{ mt: { xs: 6, md: 10 }, px: { xs: 2, sm: 3, md: 6 } }}>
+      <Box sx={{ mt: { xs: 2, md: 4}, px: { xs: 2, sm: 3, md: 6 } }}>
         <PopularCar cars={mockCars} itemsPerView={4} />
       </Box>
 
       {/* Recommendation Cars */}
-      <Box sx={{ mt: { xs: 6, md: 10 }, px: { xs: 2, sm: 3, md: 6 } }}>
+      <Box sx={{ mt: { xs: 2, md: 4 }, px: { xs: 2, sm: 3, md: 6 } }}>
         <RecomendationCar cars={mockCars} itemsPerRow={4} />
       </Box>
 

@@ -158,11 +158,12 @@ const CarCard = ({ car, onUnfavorite }) => {
         </Typography>
       )}
     </Box>
-    <Button
+   <Button
   variant="contained"
   color="primary"
   component={Link}
-  to={`/payment/${car.id}`} // 👈 chuyển sang trang thanh toán
+  to={`/payment/${car.id}`}
+  state={{ car }} // truyền toàn bộ đối tượng car qua location.state
   sx={{
     borderRadius: 2,
     textTransform: "none",

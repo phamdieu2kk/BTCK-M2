@@ -22,6 +22,9 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import PayPalIcon from "@mui/icons-material/AccountBalanceWallet";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import SecurityIcon from "@mui/icons-material/Security";
+import dayjs from "dayjs";
+import { useLocation } from "react-router-dom";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import PickUp from "../../components/PickUp/PickUp";
 import DropOff from "../../components/DropOff/DropOff";
@@ -29,17 +32,107 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 
 const Payment = () => {
+  const location = useLocation();
+  const selectedCar = location.state?.car;
+
+  // Form data và errors
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+
+  // Payment method
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("credit-card");
 
+  // Ngày thuê
+  const [startDate, setStartDate] = useState(dayjs());
+  const [endDate, setEndDate] = useState(dayjs().add(1, "day"));
+
+  // Giá và giảm giá
+  const [price] = useState(selectedCar?.price || 0);
+  const [discount, setDiscount] = useState(0);
+
+  // Promo code
+  const [promoCode, setPromoCode] = useState("");
+
+  // Checkbox
+  const [agreeMarketing, setAgreeMarketing] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+
+  if (!selectedCar) {
+    return <Typography variant="h6" color="error">No car selected for payment.</Typography>;
+  }
+
+  // Tính toán days và total trực tiếp trong render
+  const diff = endDate.diff(startDate, "day");
+  const days = diff > 0 ? diff : 1;
+  const baseTotal = days * price;
+  const total = baseTotal - baseTotal * discount;
+
+  // Xử lý input form
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Validate form đơn giản
+  const validateForm = () => {
+    let errors = {};
+
+    if (!formData.name.trim()) errors.name = "Name is required";
+    if (!formData.phone.trim()) {
+      errors.phone = "Phone number is required";
+    } else if (!/^\d{9,15}$/.test(formData.phone.trim())) {
+      errors.phone = "Phone number is invalid";
+    }
+    if (!formData.address.trim()) errors.address = "Address is required";
+    if (!formData.city.trim()) errors.city = "City is required";
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  // Xử lý đổi phương thức thanh toán
   const handlePaymentMethodChange = (event) => {
     setSelectedPaymentMethod(event.target.value);
   };
 
+  // Xử lý promo code input
+  const handlePromoChange = (e) => setPromoCode(e.target.value);
+
+  // Áp dụng promo code
+  const handleApplyPromo = () => {
+    if (promoCode.toLowerCase() === "rent10") {
+      setDiscount(0.1);
+      alert("Promo code applied: 10% discount!");
+    } else {
+      setDiscount(0);
+      alert("Invalid promo code");
+    }
+  };
+
+  // Xử lý submit
+  const handleRentNow = () => {
+    if (!validateForm()) {
+      alert("Please fix the errors in the form.");
+      return;
+    }
+    if (!agreeTerms) {
+      alert("You must agree with the terms and privacy policy.");
+      return;
+    }
+    // Thêm xử lý gửi dữ liệu ra backend hoặc chuyển trang ở đây
+    alert("Payment submitted successfully!");
+  };
+
   return (
     <>
-     <Header/>
+      <Header />
       <Box sx={{ p: { xs: 2, md: 4 }, backgroundColor: "#F6F7F9" }}>
-       
         <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={4}>
           {/* Left Side */}
           <Box flex={2}>
@@ -52,14 +145,51 @@ const Payment = () => {
                     Step 1 of 4
                   </Typography>
                 </Typography>
-                <Typography variant="body2" gutterBottom color="text.secondary">
-                  Please enter your billing info
-                </Typography>
                 <Box display="flex" flexWrap="wrap" gap={2} mt={2}>
-                  <TextField fullWidth label="Name" placeholder="Your name" sx={{ flex: "1 1 45%" }} />
-                  <TextField fullWidth label="Phone Number" placeholder="Phone number" sx={{ flex: "1 1 45%" }} />
-                  <TextField fullWidth label="Address" placeholder="Address" sx={{ flex: "1 1 45%" }} />
-                  <TextField fullWidth label="Town / City" placeholder="Town or city" sx={{ flex: "1 1 45%" }} />
+                  <TextField
+                    fullWidth
+                    label="Name"
+                    placeholder="Your name"
+                    sx={{ flex: "1 1 45%" }}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    error={!!formErrors.name}
+                    helperText={formErrors.name}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
+                    placeholder="Phone number"
+                    sx={{ flex: "1 1 45%" }}
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    error={!!formErrors.phone}
+                    helperText={formErrors.phone}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    placeholder="Address"
+                    sx={{ flex: "1 1 45%" }}
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    error={!!formErrors.address}
+                    helperText={formErrors.address}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Town / City"
+                    placeholder="Town or city"
+                    sx={{ flex: "1 1 45%" }}
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    error={!!formErrors.city}
+                    helperText={formErrors.city}
+                  />
                 </Box>
               </CardContent>
             </Card>
@@ -72,9 +202,6 @@ const Payment = () => {
                   <Typography component="span" variant="body2" color="text.secondary">
                     Step 2 of 4
                   </Typography>
-                </Typography>
-                <Typography variant="body2" gutterBottom color="text.secondary">
-                  Please select your rental date
                 </Typography>
                 <Box display="flex" gap={2} mt={2}>
                   <PickUp />
@@ -92,10 +219,6 @@ const Payment = () => {
                     Step 3 of 4
                   </Typography>
                 </Typography>
-                <Typography variant="body2" gutterBottom color="text.secondary">
-                  Please enter your payment method
-                </Typography>
-
                 <FormControl component="fieldset" sx={{ mt: 2, width: "100%" }}>
                   <RadioGroup
                     row
@@ -104,92 +227,83 @@ const Payment = () => {
                     name="payment-method"
                     sx={{ gap: 2 }}
                   >
-                    {/* Credit Card Option */}
+                    {/* Credit Card */}
                     <FormControlLabel
                       value="credit-card"
                       control={<Radio sx={{ display: "none" }} />}
                       label={
                         <Box
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="space-between"
-                          gap={1}
                           sx={{
                             border: "1px solid",
                             borderColor: selectedPaymentMethod === "credit-card" ? "primary.main" : "#E0E0E0",
                             borderRadius: 2,
                             p: 2,
-                            flexGrow: 1,
-                            cursor: "pointer",
                             backgroundColor: selectedPaymentMethod === "credit-card" ? "#F5F8FF" : "transparent",
+                            cursor: "pointer"
                           }}
                         >
-                          <Box display="flex" alignItems="center" gap={1}>
-                            <CreditCardIcon />
-                            <Typography>Credit Card</Typography>
-                          </Box>
-                          <Box>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style={{ height: 16, marginRight: 4 }} />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: 16 }} />
+                          <Box display="flex" alignItems="center" justifyContent="space-between">
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <CreditCardIcon />
+                              <Typography>Credit Card</Typography>
+                            </Box>
+                            <Box>
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style={{ height: 16, marginRight: 4 }} />
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: 16 }} />
+                            </Box>
                           </Box>
                         </Box>
                       }
                     />
 
-                    {/* PayPal Option */}
+                    {/* PayPal */}
                     <FormControlLabel
                       value="paypal"
                       control={<Radio sx={{ display: "none" }} />}
                       label={
                         <Box
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="space-between"
-                          gap={1}
                           sx={{
                             border: "1px solid",
                             borderColor: selectedPaymentMethod === "paypal" ? "primary.main" : "#E0E0E0",
                             borderRadius: 2,
                             p: 2,
-                            flexGrow: 1,
-                            cursor: "pointer",
                             backgroundColor: selectedPaymentMethod === "paypal" ? "#F5F8FF" : "transparent",
+                            cursor: "pointer"
                           }}
                         >
-                          <Box display="flex" alignItems="center" gap={1}>
-                            <PayPalIcon />
-                            <Typography>PayPal</Typography>
+                          <Box display="flex" alignItems="center" justifyContent="space-between">
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <PayPalIcon />
+                              <Typography>PayPal</Typography>
+                            </Box>
+                            <img src="https://www.paypalobjects.com/webstatic/mktg/logos/PP_Full_Color_CMYK.png" alt="PayPal" style={{ height: 20 }} />
                           </Box>
-                          <img src="https://www.paypalobjects.com/webstatic/mktg/logos/PP_Full_Color_CMYK.png" alt="PayPal" style={{ height: 20 }} />
                         </Box>
                       }
                     />
 
-                    {/* Bitcoin Option */}
+                    {/* Bitcoin */}
                     <FormControlLabel
                       value="bitcoin"
                       control={<Radio sx={{ display: "none" }} />}
                       label={
                         <Box
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="space-between"
-                          gap={1}
                           sx={{
                             border: "1px solid",
                             borderColor: selectedPaymentMethod === "bitcoin" ? "primary.main" : "#E0E0E0",
                             borderRadius: 2,
                             p: 2,
-                            flexGrow: 1,
-                            cursor: "pointer",
                             backgroundColor: selectedPaymentMethod === "bitcoin" ? "#F5F8FF" : "transparent",
+                            cursor: "pointer"
                           }}
                         >
-                          <Box display="flex" alignItems="center" gap={1}>
-                            <CurrencyBitcoinIcon />
-                            <Typography>Bitcoin</Typography>
+                          <Box display="flex" alignItems="center" justifyContent="space-between">
+                            <Box display="flex" alignItems="center" gap={1}>
+                              <CurrencyBitcoinIcon />
+                              <Typography>Bitcoin</Typography>
+                            </Box>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin" style={{ height: 20 }} />
                           </Box>
-                          <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" alt="Bitcoin" style={{ height: 20 }} />
                         </Box>
                       }
                     />
@@ -198,9 +312,9 @@ const Payment = () => {
 
                 {selectedPaymentMethod === "credit-card" && (
                   <Box display="flex" flexWrap="wrap" gap={2} mt={2}>
-                    <TextField fullWidth label="Card Number" placeholder="Card number" sx={{ flex: "1 1 45%" }} />
-                    <TextField fullWidth label="Expiration Date" placeholder="MM/YY" sx={{ flex: "1 1 20%" }} />
-                    <TextField fullWidth label="CVC" sx={{ flex: "1 1 20%" }} />
+                    <TextField fullWidth label="Card Number" sx={{ flex: "1 1 45%" }} placeholder="1234 5678 9012 3456" />
+                    <TextField fullWidth label="Expiration Date" sx={{ flex: "1 1 20%" }} placeholder="MM/YY" />
+                    <TextField fullWidth label="CVC" sx={{ flex: "1 1 20%" }} placeholder="123" />
                     <TextField fullWidth label="Card Holder" sx={{ flex: "1 1 45%" }} />
                   </Box>
                 )}
@@ -216,27 +330,34 @@ const Payment = () => {
                     Step 4 of 4
                   </Typography>
                 </Typography>
-                <Typography variant="body2" gutterBottom color="text.secondary">
-                  We are getting to the end. Just few clicks and your rental is ready!
-                </Typography>
-
                 <FormGroup sx={{ mt: 2 }}>
-                  <FormControlLabel control={<Checkbox />} label="I agree with sending Marketing and newsletter emails. No spam, promised!" />
-                  <FormControlLabel control={<Checkbox />} label="I agree with our terms and conditions and privacy policy." />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={agreeMarketing}
+                        onChange={(e) => setAgreeMarketing(e.target.checked)}
+                      />
+                    }
+                    label="I agree with marketing emails."
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={agreeTerms}
+                        onChange={(e) => setAgreeTerms(e.target.checked)}
+                      />
+                    }
+                    label="I agree with the terms and privacy policy."
+                  />
                 </FormGroup>
-
-                <Button variant="contained" color="primary"  sx={{ mt: 3, py: 1.5, textTransform: "none", fontWeight: 600 }}>
-                  Rent Now
-                </Button>
-
+              
                 <Divider sx={{ my: 3 }} />
-
                 <Stack direction="row" spacing={2} alignItems="center">
                   <SecurityIcon fontSize="large" color="action" />
                   <Box>
                     <Typography fontWeight={600}>All your data is safe</Typography>
                     <Typography variant="body2" color="text.secondary">
-                      We are using the most advanced security to provide you the best experience ever.
+                      We use advanced security to protect your info.
                     </Typography>
                   </Box>
                 </Stack>
@@ -244,76 +365,124 @@ const Payment = () => {
             </Card>
           </Box>
 
-          {/* Right Side - Rental Summary */}
+          {/* Right Side - Summary */}
           <Box flex={1} sx={{ position: "sticky", top: 20, height: "fit-content" }}>
             <Card>
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Rental Summary
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  Prices may change depending on the length of the rental and the price of your rental car.
-                </Typography>
+  <Typography variant="h6" gutterBottom>
+    Rental Summary
+  </Typography>
+  <Box display="flex" alignItems="center" mb={2}>
+    <CardMedia
+      component="img"
+      image={selectedCar.image}
+      alt={selectedCar.name}
+      sx={{ width: 80, height: 50, objectFit: "contain", borderRadius: 1, mr: 2 }}
+    />
+    <Box>
+      <Typography fontWeight="bold">{selectedCar.name}</Typography>
+      <Typography variant="body2" color="text.secondary">★★★★☆ 440+ Reviewer</Typography>
+    </Box>
+  </Box>
 
-                <Box display="flex" alignItems="center" mb={2}>
-                  <CardMedia
-                    component="img"
-                    image="https://cdn.pixabay.com/photo/2013/07/12/13/58/nissan-146989_960_720.png"
-                    alt="car"
-                    sx={{ width: 80, height: 50, objectFit: "contain", borderRadius: 1, mr: 2 }}
-                  />
-                  <Box>
-                    <Typography fontWeight="bold">Nissan GT - R</Typography>
-                    <Typography variant="body2" color="text.secondary">★★★★☆ 440+ Reviewer</Typography>
-                  </Box>
-                </Box>
+  <Box display="flex" justifyContent="space-between" mb={1}>
+    <Typography>Price per day</Typography>
+    <Typography>${price.toFixed(2)}</Typography>
+  </Box>
 
-                <Box display="flex" justifyContent="space-between" mb={1}>
-                  <Typography>Subtotal</Typography>
-                  <Typography>$80.00</Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between" mb={2}>
-                  <Typography>Tax</Typography>
-                  <Typography>$0</Typography>
-                </Box>
+  <Box display="flex" justifyContent="space-between" mb={1}>
+    <Typography>Rental Days</Typography>
+    <Typography>{days} day(s)</Typography>
+  </Box>
 
-                {/* Promo code */}
-                <Box display="flex" alignItems="center" sx={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: 2,
-                  px: 2,
-                  py: 1,
-                  mb: 2,
-                  backgroundColor: "white"
-                }}>
-                  <LocalOfferIcon sx={{ color: "#90A3BF", mr: 1 }} />
-                  <TextField
-                    variant="standard"
-                    placeholder="Apply promo code"
-                    fullWidth
-                    InputProps={{ disableUnderline: true }}
-                    sx={{ '& .MuiInputBase-input::placeholder': { color: '#90A3BF', opacity: 1 } }}
-                  />
-                  <Button sx={{ textTransform: 'none', color: 'text.secondary', fontWeight: 600 }}>Apply now</Button>
-                </Box>
+  <Box display="flex" justifyContent="space-between" mb={2}>
+    <Typography>Tax</Typography>
+    <Typography>$0</Typography>
+  </Box>
 
-                {/* Total */}
-                <Box display="flex" justifyContent="space-between" alignItems="flex-start">
-                  <Box>
-                    <Typography variant="h6" fontWeight={600}>Total Rental Price</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Overall price and includes rental discount
-                    </Typography>
-                  </Box>
-                  <Typography variant="h6" fontWeight={700} color="primary">$80.00</Typography>
-                </Box>
-              </CardContent>
+  <Box display="flex" gap={2} mb={2}>
+    <DatePicker
+      label="Start Date"
+      value={startDate}
+      onChange={(newValue) => {
+        if (!newValue) return;
+        if (newValue.isAfter(endDate, "day")) {
+          setEndDate(newValue.add(1, "day"));
+        }
+        setStartDate(newValue);
+      }}
+      maxDate={endDate}
+      slotProps={{ textField: { fullWidth: true } }}
+    />
+    <DatePicker
+      label="End Date"
+      value={endDate}
+      onChange={(newValue) => {
+        if (!newValue) return;
+        if (newValue.isBefore(startDate, "day")) {
+          setEndDate(startDate.add(1, "day"));
+        } else {
+          setEndDate(newValue);
+        }
+      }}
+      minDate={startDate.add(1, "day")}
+      slotProps={{ textField: { fullWidth: true } }}
+    />
+  </Box>
+
+  <Box
+    display="flex"
+    alignItems="center"
+    sx={{ border: "1px solid #E0E0E0", borderRadius: 2, px: 2, py: 1, mb: 2, backgroundColor: "white" }}
+  >
+    <LocalOfferIcon sx={{ color: "#90A3BF", mr: 1 }} />
+    <TextField
+      variant="standard"
+      placeholder="Apply promo code"
+      fullWidth
+      value={promoCode}
+      onChange={handlePromoChange}
+      InputProps={{ disableUnderline: true }}
+      sx={{ '& .MuiInputBase-input::placeholder': { color: '#90A3BF', opacity: 1 } }}
+    />
+    <Button
+      sx={{ textTransform: 'none', color: 'text.secondary', fontWeight: 600 }}
+      onClick={handleApplyPromo}
+    >
+      Apply
+    </Button>
+  </Box>
+
+  {/* Nút Rent Now nằm dưới phần giá */}
+  <Box display="flex" justifyContent="space-between" alignItems="center" flexDirection="column" gap={2}>
+    <Box width="100%" display="flex" justifyContent="space-between" alignItems="flex-start">
+      <Box>
+        <Typography variant="h6" fontWeight={600}>Total Rental Price</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Based on selected days and car price
+        </Typography>
+      </Box>
+      <Typography variant="h6" fontWeight={700} color="primary">
+        ${total.toFixed(2)}
+      </Typography>
+    </Box>
+
+    <Button
+      variant="contained"
+      color="primary"
+      fullWidth
+      sx={{ py: 1.5, textTransform: "none", fontWeight: 600 }}
+      onClick={handleRentNow}
+    >
+      Rent Now
+    </Button>
+  </Box>
+</CardContent>
+
             </Card>
           </Box>
         </Box>
       </Box>
-
-      {/* Footer luôn nằm ngoài nội dung chính */}
       <Footer />
     </>
   );
