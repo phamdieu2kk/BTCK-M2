@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "Toyota Camry",
+    "category": "Sedan",
+    "price": 25000,
+    "image": "/assets/images/camry.jpg"
+  },
+  {
+  "id": "demo_1725000000000",
+  "status": "paid",
+  "car_title": "Toyota Camry",
+  "daily_rate": 1530,
+  "payment_method": "COD",
+  "message": "Payment simulated successfully (DEV MODE)"
+}
+,
+  {
+    "id": 2,
+    "name": "Ford Ranger",
+    "category": "Truck",
+    "price": 30000,
+    "image": "/assets/images/ranger.jpg"
+  }
+]
