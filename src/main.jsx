@@ -17,6 +17,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 // Date picker setup
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import 'leaflet/dist/leaflet.css';
 
 // Tạo theme MUI
 const theme = createTheme({
